@@ -1,0 +1,25 @@
+# Local account data, models, captures, logs, exports and publication backups
+/private/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.db
+*.sqlite*
+*.log
+*.jsonl
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.png
+*.jpg
+*.jpeg
+*.webp
+node_modules/
+.venv/

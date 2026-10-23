@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>Boss 浏览助手</title>
+<link rel="stylesheet" href="popup.css">
+<body><h1>Boss 浏览助手 · 0.7.2</h1>
+<p>连接后可关闭侧栏、切换标签页或最小化。模型阅读 JD，信息不足保留待问询；消息须逐批预览确认。</p>
+<section><label>本机服务配对码 <input id="code" maxlength="10" autocomplete="off"></label>
+<button id="connect">连接本机</button><button id="ping">检查连接</button></section>
+<p id="connection" role="status">尚未检查连接</p>
+<button id="bind">连接当前 Boss 页并开启后台浏览</button><button id="stop">立即停止</button>
+<button id="focus">定位已连接 Boss 页</button><button id="read">重新读取并自动回传</button>
+<p id="status" role="status">无需手动发送。仅操作明确连接的 Boss 页；关闭侧栏不停止，点击立即停止结束接管。</p>
+<section class="search-box"><h2>找岗位 · 候选核对</h2>
+<form id="search-form">
+<label>关键词（逗号分隔）<input id="keywords" required placeholder="输入自己的目标岗位关键词"></label>
+<label>城市 <input id="city" value="全国" required></label>
+<div class="row"><label><input type="checkbox" id="remote">必须远程</label><label><input type="checkbox" id="part-time">兼职位</label></div>
+<div class="row"><label>我的学历 <select id="education"><option selected>学历不限</option><option>高中</option><option>大专</option><option>本科</option><option>硕士</option><option>博士</option></select></label>
+<label>工作经验（年）<input id="years" type="number" min="0" max="50" value="0"></label></div>
+<label>本轮最多核对 <input id="limit" type="number" min="1" max="30" value="12">个岗位</label>
+<label><input id="model-auto" type="checkbox">采集后交给 OpenAI Codex 模型阅读本轮 JD</label>
+<details><summary>网站筛选（可选，与个人条件分开）</summary><p class="small">学历与经验默认不限，避免漏掉你能申请的岗位。选项来自当前 Boss 页面；远程仍逐条看原文。</p><div id="filters"></div></details>
+<button type="submit" id="search-start">开始找岗并保存候选</button><button type="button" id="search-stop">停止找岗</button>
+</form>
+<p id="search-status" role="status">连接 Boss 后可开始。侧栏关闭后任务仍继续。</p>
+<div class="row"><button id="current-run">本轮结果</button><button id="saved-jobs">已存岗位</button></div>
+<p class="small">勾选岗位后可单独分析；判断采用上方当前求职条件。未分析时规则仅作辅助，未写远程不直接排除。</p>
+<div class="row"><button id="model-auth">检查订阅模型连接</button><button id="analyze-selected">模型阅读勾选岗位</button></div>
+<p id="assistant-status" role="status">点击模型分析或启用采集后分析，会将所选 JD、填写的条件和对应 HR 文字发送给 OpenAI；不发送整个消息列表。</p>
+<div id="search-results"></div>
+<p class="small">导出内容为最近一轮的完整条件、判断依据和职位原文。已存岗位保留采集时的个人条件。</p>
+<div class="row"><button id="export-md">导出核对报告</button><button id="export-csv">导出表格</button><button id="export-json">导出原始结果</button></div>
+<a id="export-download" hidden>保存文件</a>
+</section>
+<section class="search-box"><h2>初步问询 · 逐批确认</h2>
+<label>首次问询原文（最多500字）<textarea id="inquiry-template" maxlength="500">您好，想进一步了解这个岗位的日常工作内容、工作安排和招聘要求，方便介绍一下吗？</textarea></label>
+<button id="save-template">保存问询模板</button>
+<div class="row"><button id="prepare-selected">为勾选岗位准备预览</button><button id="prepare-current">为当前选中 HR 准备预览</button></div>
+<p class="small">每批最多5个岗位。准备预览只读取页面。新联系在确认发送后会先触发 Boss 默认招呼，再追加上方问询；不操作发简历、换电话、换微信。异常发送不重试。</p>
+<p id="inquiry-status" role="status">尚无问询批次</p><div id="inquiry-batches"></div>
+</section>
+<details><summary>最近一次页面读取</summary>
+<pre id="summary"></pre><textarea id="preview" readonly aria-label="职位预览" placeholder="读取结果会出现在这里"></textarea>
+<img id="salary-image" hidden alt="仅薪资区域截图" style="max-width:100%;border:1px solid #cadbd8">
+</details>
+<p class="small">不打开控制台、不使用 CDP/debugger/Playwright。读取已渲染正文；薪资特殊字符时只回传薪资区域截图。读取和错误自动传回本机。</p>
+<script src="popup.js"></script></body></html>

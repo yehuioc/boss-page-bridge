@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Boss 浏览助手",
+  "version": "0.7.2",
+  "description": "后台连接指定 Boss 标签页，自动回传读取结果和接收有限浏览指令。不连接调试器。",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel",
+    "alarms"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8926/*",
+    "https://www.zhipin.com/*",
+    "https://zhipin.com/*"
+  ],
+  "action": {
+    "default_title": "Boss 职位读取"
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "minimum_chrome_version": "116"
+}
